@@ -1,3 +1,5 @@
+# In progress: trying to adapt open source code created by github.com/nickjj for getting youtube comments into a sentiment analysis web scraper.
+
 # What is pick-random-youtube-comments? ![CI](https://github.com/nickjj/pick-random-youtube-comments/workflows/CI/badge.svg?branch=master)
 
 It's a zero dependency Python 3 script that gets a list of top level comments
