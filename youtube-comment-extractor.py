@@ -12,10 +12,17 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 
 
+"""
+'textDisplay' is the response
+'totalReplyCount' returns integer
+"""
+
 def get_api_key():
     try:
         return os.environ['YOUTUBE_API_KEY']
+            
     except KeyError:
+        return input("enter an API key for google: ")
         msg = '''You must create and export a YOUTUBE_API_KEY, instructions:
 
     1. Go-to https://console.developers.google.com/apis/credentials
@@ -60,7 +67,8 @@ def display_names(results, is_verbose):
     for item in results['items']:
         comment = item['snippet']['topLevelComment']['snippet']
         author = comment['authorDisplayName']
-        authors.append(author)
+        text = comment['textDisplay']
+        authors.append([author,text])
 
         if is_verbose:
             print(f'  {author}')
@@ -85,7 +93,7 @@ def get_comments(api_params):
         return json.load(response)
 
 
-def get_comment_authors(api_token, video_id, is_verbose):
+def get_all_comments(api_token, video_id, is_verbose):
     authors = []
     page_count = 1
 
@@ -186,29 +194,26 @@ Winners ({winner_count}):
     return None
 
 
+def cmd_request_everything():
+    v = input("Video Id")
+    comments = get_all_comments(get_api_key(), vid_id, is_verbose=False)
+    return comments
+    
+    
+
 if __name__ == '__main__':
-    args = parseargs()
+    #args = parseargs()
+    
+    #omit_authors_count = len(args.omit_authors)
+    
+    #comments = get_comments(get_api_key(), args.video_id, args.verbose)
+    vid_id = "QzxmWzHtimA"
+    comments = get_all_comments(get_api_key(), vid_id, is_verbose=False)
+    comments = flatten_list(comments)
+    authors_count = len(comments)
 
-    omit_authors_count = len(args.omit_authors)
+    for i in comments:
+        print(i)
 
-    authors = get_comment_authors(get_api_key(), args.video_id, args.verbose)
-    authors = flatten_list(authors)
-    authors_count = len(authors)
 
-    authors = sorted_unique_list(authors)
-    authors_unique_count = len(authors)
 
-    authors = remove_authors(authors, args.omit_authors)
-    authors_final_count = len(authors)
-
-    duplicate_authors_count = authors_count - authors_unique_count
-
-    winners, winner_count = pick_winners(authors, authors_final_count,
-                                         args.winners)
-
-    generate_report(winners=winners,
-                    winner_count=winner_count,
-                    authors_count=authors_count,
-                    duplicate_authors_count=duplicate_authors_count,
-                    omit_authors_count=omit_authors_count,
-                    authors_final_count=authors_final_count)
