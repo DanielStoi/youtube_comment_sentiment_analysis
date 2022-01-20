@@ -8,8 +8,8 @@ class Sentiment:
         self.value_sheet = value_sheet
 
     def process_text(text):
-        text = text.split(" ")
-        text = text.split(".")
+        text = text.split()
+        #text = text.split(".")
         t = []
         for i in text:
             if i:
@@ -22,10 +22,7 @@ class Sentiment:
             if word in text:
                 score += text.count(word)*self.value_sheet[word]
         return score
-            
-        
-        
-        
+
         
 
     def calculate_weighted_score(self, text):
@@ -34,8 +31,41 @@ class Sentiment:
         for word in self.value_sheet:
             if word in text:
                 score += text.count(word)*self.value_sheet[word]
-        return score
+        return score/words
         
         
+    def export_preferences(self, file_name):
+        try:
+            f = open(file_name,"w")
+            for word in self.value_sheet:
+                f.write(word+" "+str(self.value_sheet[word])+"\n")
+                f.flush()
+            f.close()
+        except:
+            errmsg = "in sentiment class; error exporting to file: "+str(file_name)
+            raise Exception(errmsg)
         
-    
+    def inport_preferences(self,file_name):
+        if True:
+            f = open(file_name,"r")
+            lines = f.readlines()
+            val_sheet = {}
+            for i in lines:
+                line = i.split(" ")
+                val = float(line[-1])
+                text = " ".join(line[:-1])
+                val_sheet[text]=val
+            print(val_sheet)
+        try:
+            print()
+        except:
+            errmsg = "in sentiment class; error inporting file: "+str(file_name)
+            raise Exception(errmsg)
+
+
+if __name__ == "__main__":
+    print("running test for some random values")
+    s = Sentiment("happness", {"red":-1,"yellow":5,"black":-1,"orange":1})
+    print(s.calculate_weighted_score("yellow yellow black red orange yellow"))
+    s.export_preferences("sentiment_export.txt")
+    s.inport_preferences("sentiment_export.txt")

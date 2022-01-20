@@ -1,0 +1,4 @@
+red -1
+yellow 5
+black -1
+orange 1
