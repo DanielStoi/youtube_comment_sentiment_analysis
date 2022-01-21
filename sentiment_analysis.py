@@ -4,8 +4,11 @@
 class Sentiment:
 
     def __init__(self, name="NONE", value_sheet = {}):
-        self.name = name
+        self.name = str(name)
         self.value_sheet = value_sheet
+
+    def __str__(self):
+        return "[SENTIMENT:"+self.name+"]"
 
     def process_text(text):
         text = text.split()
@@ -23,8 +26,6 @@ class Sentiment:
                 score += text.count(word)*self.value_sheet[word]
         return score
 
-        
-
     def calculate_weighted_score(self, text):
         score=0
         words = len(Sentiment.process_text(text)) # amount of distinct words
@@ -32,7 +33,20 @@ class Sentiment:
             if word in text:
                 score += text.count(word)*self.value_sheet[word]
         return score/words
-        
+    
+    def generate_comments_score_unweighted(self,comments):
+        score = 0
+        for i in comments:
+            score += self.calculate_score(comments[1])
+        return score/len(comments)
+
+    
+    def generate_comments_scores_weighted(self,comments):
+        score = 0
+        for i in comments:
+            score += self.calculate_weighted_score(comments[1])
+        return score/len(comments)
+    
         
     def export_preferences(self, file_name):
         try:
@@ -45,7 +59,7 @@ class Sentiment:
             errmsg = "in sentiment class; error exporting to file: "+str(file_name)
             raise Exception(errmsg)
         
-    def inport_preferences(self,file_name):
+    def import_preferences(self,file_name):
         if True:
             f = open(file_name,"r")
             lines = f.readlines()
@@ -68,4 +82,5 @@ if __name__ == "__main__":
     s = Sentiment("happness", {"red":-1,"yellow":5,"black":-1,"orange":1})
     print(s.calculate_weighted_score("yellow yellow black red orange yellow"))
     s.export_preferences("sentiment_export.txt")
-    s.inport_preferences("sentiment_export.txt")
+    s.import_preferences("sentiment_export.txt")
+    print(s)

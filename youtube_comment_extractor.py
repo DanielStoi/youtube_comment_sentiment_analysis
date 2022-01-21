@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 
+
+"""
+credit goes to github user nickjj for writing essentially essentially all of the
+code within this file.
+
+The code was adapted to provide the comments instead of just the username of the users
+
+
+'textDisplay' is the response
+'totalReplyCount' returns integer
+"""
 import argparse
 import json
 import os
@@ -12,10 +23,21 @@ from urllib.request import urlopen
 from urllib.parse import urlencode
 
 
-"""
-'textDisplay' is the response
-'totalReplyCount' returns integer
-"""
+
+def extract_youtube_id(url):
+    if len(url) == 11:
+        return url
+
+    location = url.find"?v="
+    if location == -1:
+        return "CANNOT EXTRACT VIDEO"
+    
+    url = url[location+3:]
+    if len(url)<11:
+        return "INVALID ID"
+    ur = url[:11]
+    return url
+
 
 def get_api_key():
     try:
