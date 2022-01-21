@@ -233,6 +233,7 @@ if __name__ == '__main__':
     comments = get_all_comments(get_api_key(), vid_id, is_verbose=False)
     comments = flatten_list(comments)
     authors_count = len(comments)
+    
 
     for i in comments:
         print(i)
