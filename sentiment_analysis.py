@@ -34,17 +34,23 @@ class Sentiment:
                 score += text.count(word)*self.value_sheet[word]
         return score/words
     
-    def generate_comments_score_unweighted(self,comments):
+    def generate_comments_score_unweighted(self,comments,is_verbose=False):
         score = 0
-        for i in comments:
-            score += self.calculate_score(comments[1])
+        for comment in comments:
+            val = self.calculate_score(comment[1])
+            score+=val
+            if is_verbose:
+                print("score for",comment[0], "is",val)
         return score/len(comments)
 
     
-    def generate_comments_scores_weighted(self,comments):
+    def generate_comments_scores_weighted(self,comments,is_verbose=False):
         score = 0
-        for i in comments:
-            score += self.calculate_weighted_score(comments[1])
+        for comment in comments:
+            val = self.calculate_weighted_score(comment[1])
+            score+=val
+            if is_verbose:
+                print("score for",comment[0], "is",val)
         return score/len(comments)
     
         
@@ -83,4 +89,5 @@ if __name__ == "__main__":
     print(s.calculate_weighted_score("yellow yellow black red orange yellow"))
     s.export_preferences("sentiment_export.txt")
     s.import_preferences("sentiment_export.txt")
+    print(s.generate_comments_score_unweighted([["jeff","red blue black orange"],["joe","red red red red"],["bob","yellow yellow yellow"]],True))
     print(s)
