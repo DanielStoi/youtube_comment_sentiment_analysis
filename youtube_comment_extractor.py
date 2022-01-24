@@ -28,14 +28,16 @@ def extract_youtube_id(url):
     if len(url) == 11:
         return url
 
-    location = url.find"?v="
+    location = url.find("?v=")
     if location == -1:
-        return "CANNOT EXTRACT VIDEO"
+        print("CANNOT EXTRACT VIDEO")
+        return False
     
     url = url[location+3:]
     if len(url)<11:
-        return "INVALID ID"
-    ur = url[:11]
+        print("INVALID ID")
+        return False
+    url = url[:11]
     return url
 
 

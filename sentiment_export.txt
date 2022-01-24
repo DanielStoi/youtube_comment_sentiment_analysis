@@ -1,4 +1,9 @@
-red -1
-yellow 5
-black -1
-orange 1
+the 0.02
+. 0.2
+? 2
+! -2
+sir 9
+dude -9
+what -0.5
+thank 2
+person 5

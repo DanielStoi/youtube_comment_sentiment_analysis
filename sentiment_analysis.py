@@ -65,29 +65,30 @@ class Sentiment:
             errmsg = "in sentiment class; error exporting to file: "+str(file_name)
             raise Exception(errmsg)
         
-    def import_preferences(self,file_name):
+    def import_preferences(self,file_name,keep=False):
         if True:
             f = open(file_name,"r")
             lines = f.readlines()
             val_sheet = {}
             for i in lines:
+                if len(i)<2:
+                    break
                 line = i.split(" ")
                 val = float(line[-1])
                 text = " ".join(line[:-1])
                 val_sheet[text]=val
             print(val_sheet)
-        try:
-            print()
-        except:
-            errmsg = "in sentiment class; error inporting file: "+str(file_name)
-            raise Exception(errmsg)
+            if keep:
+                self.value_sheet = val_sheet
+            return val_sheet
+        return {}
 
 
 if __name__ == "__main__":
     print("running test for some random values")
     s = Sentiment("happness", {"red":-1,"yellow":5,"black":-1,"orange":1})
     print(s.calculate_weighted_score("yellow yellow black red orange yellow"))
-    s.export_preferences("sentiment_export.txt")
-    s.import_preferences("sentiment_export.txt")
+    s.export_preferences("colour_sentiment_export.txt")
+    s.import_preferences("colour_sentiment_export.txt")
     print(s.generate_comments_score_unweighted([["jeff","red blue black orange"],["joe","red red red red"],["bob","yellow yellow yellow"]],True))
     print(s)
