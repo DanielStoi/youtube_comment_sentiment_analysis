@@ -1,6 +1,6 @@
 # In progress: trying to adapt open source code created by github.com/nickjj for getting youtube comments into a sentiment analysis web scraper.
 
-run "main" to some basic sample execution.
+run "main" for some basic sample execution.
 
 for the sentiment file sheet try 
 
