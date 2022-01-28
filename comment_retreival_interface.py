@@ -1,4 +1,6 @@
-
+def empty_method(a):
+    pass
+    
 
 class comment_retreival_interface:
     #an abstraction of the connection interface
