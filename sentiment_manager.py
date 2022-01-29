@@ -1,5 +1,6 @@
 from sentiment_analysis import *
 import youtube_comment_extractor
+from comment_retreival_interface import *
 
 class sentiment_manager:
     #sentiment manager is just an interface class for managing everything
@@ -30,8 +31,11 @@ class sentiment_manager:
 
     
     def pull_comments(self,vid_id):
-        comments = youtube_comment_extractor.get_all_comments(self.api_key, vid_id, is_verbose=False)
-        comments = youtube_comment_extractor.flatten_list(comments)
+        inter = generate_youtube_interface()
+        inter.generic_features["google/youtube_api_key"] = self.api_key
+        comments = inter.get({"vid_url":vid_id})
+        #comments = youtube_comment_extractor.get_all_comments(self.api_key, vid_id, is_verbose=False)
+        #comments = youtube_comment_extractor.flatten_list(comments)
         self.imported_comments[vid_id] = comments
 
         
